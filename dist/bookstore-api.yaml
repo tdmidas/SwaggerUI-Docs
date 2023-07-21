@@ -1,0 +1,892 @@
+---
+openapi: 3.0.0
+info:
+  title: Bookstore RESTful API
+  description: |
+    Bookstore RESTful API with Passport Authentication, JWT Authorization, CRUD features on users, books, orders and author.
+  termsOfService: http://swagger.io/terms/
+  contact:
+    url: https://tdmidas.github.io/
+    email: tranduongminhdai@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: "1.0"
+servers:
+- url: http://localhost:8000/api/v1
+tags:
+- name: Author
+- name: Books
+- name: Auth
+- name: User
+- name: Order
+paths:
+  /author:
+    get:
+      tags:
+      - Author
+      summary: getAllAuthor
+      operationId: getAllAuthor
+      parameters: []
+      responses:
+        "200":
+          description: ""
+      deprecated: false
+    post:
+      tags:
+      - Author
+      summary: addAuthor
+      operationId: addAuthor
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/author_body'
+            example:
+              name: H.P Lovecraft
+              year: "1978"
+        required: true
+      responses:
+        "200":
+          description: ""
+      deprecated: false
+  /author/{authorId}:
+    put:
+      tags:
+      - Author
+      summary: Update Author
+      operationId: UpdateAuthor
+      parameters:
+      - name: authorId
+        in: path
+        description: ID of author that needs to be updated
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/author_authorId_body'
+            example:
+              name: Bruce Brown
+              year: "1967"
+        required: true
+      responses:
+        "200":
+          description: ""
+      deprecated: false
+    delete:
+      tags:
+      - Author
+      summary: Delete author
+      operationId: Deleteauthor
+      parameters:
+      - name: authorId
+        in: path
+        description: ID of author that needs to be deleted
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: ""
+      deprecated: false
+  /book:
+    get:
+      tags:
+      - Books
+      summary: get All book
+      operationId: getAllbook
+      parameters: []
+      responses:
+        "200":
+          description: ""
+      deprecated: false
+    post:
+      tags:
+      - Books
+      summary: create a Book(Admin)
+      operationId: createaBook(Admin)
+      parameters:
+      - name: token
+        in: header
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGI5MDVhNGRlZmRjYTM2NmUxZjQxNTEiLCJpc0FkbWluIjp0cnVlLCJpYXQiOjE2ODk4NDcyNDYsImV4cCI6MTY4OTg0OTA0Nn0.Bde2w9FSAUyD3YKmRgzOTFgAmiQkufHRzq1UyOm8oAg
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/book_body'
+            example:
+              name: Dunwich Horror
+              price: 99000
+              genres: Horror
+              image: /images/3.jpg
+              author: 64b909c43818c3548b37f3c9
+              countInStock: 4
+              numReviews: 56
+              description: "Nằm trong một ngôi làng bị cô lập, hoang vắng và suy đồi của Dunwich, Massachusetts. Ẩn mình trong một vùng đất hoang vu bị nguyền rủa, của những tiếng ồn ..."
+        required: true
+      responses:
+        "200":
+          description: ""
+      deprecated: false
+  /book/{bookId}:
+    get:
+      tags:
+      - Books
+      summary: get Book by id
+      operationId: getBookbyid
+      parameters:
+      - name: bookId
+        in: path
+        description: ID of book that needs to be created
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: ""
+      deprecated: false
+    put:
+      tags:
+      - Books
+      summary: Update a book(Admin)
+      operationId: Updateabook(Admin)
+      parameters:
+      - name: bookId
+        in: path
+        description: ID of book that needs to be created
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: ""
+      deprecated: false
+    delete:
+      tags:
+      - Books
+      summary: Delete a book(Admin)
+      operationId: Deleteabook(Admin)
+      parameters:
+      - name: bookId
+        in: path
+        description: ID of book that needs to be created
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: ""
+      deprecated: false
+  /book/{bookId}/review:
+    post:
+      tags:
+      - Books
+      summary: Review a book
+      operationId: Reviewabook
+      parameters:
+      - name: token
+        in: header
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGI5MDVhNGRlZmRjYTM2NmUxZjQxNTEiLCJpc0FkbWluIjp0cnVlLCJpYXQiOjE2ODk4NTAxMDksImV4cCI6MTY4OTg1MTkwOX0.zGx8UKxJfTuK7D7TzQ7oV9QiXKx6PnHllSq8kaRQj-c
+      - name: bookId
+        in: path
+        description: ID of book that needs to be created
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/bookId_review_body'
+            example:
+              name: Minh Đại
+              rating: 5
+              comment: great
+              user: 64b905a4defdca366e1f4151
+        required: true
+      responses:
+        "200":
+          description: ""
+      deprecated: false
+  /auth/register:
+    post:
+      tags:
+      - Auth
+      summary: Register
+      operationId: Register
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/auth_register_body'
+            example:
+              name: Nguyễn Văn A
+              email: vana@gmail.com
+              password: mutoyugi
+        required: true
+      responses:
+        "200":
+          description: ""
+      deprecated: false
+  /auth/login:
+    post:
+      tags:
+      - Auth
+      summary: Sign In
+      operationId: SignIn
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/auth_login_body'
+            example:
+              email: minhdai@gmail.com
+              password: mutoyugi
+        required: true
+      responses:
+        "200":
+          description: ""
+      deprecated: false
+  /auth/logout:
+    post:
+      tags:
+      - Auth
+      summary: Log out
+      operationId: Logout
+      parameters:
+      - name: token
+        in: header
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGI4YWYyMzM1MzcwNzJjNWEyOTRlNDUiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNjg5ODQyNTU5LCJleHAiOjE2ODk4NDQzNTl9.u-wKc-r5_JCifgAO77V_YiDWirurHbj4PavhmlPlfcw
+      responses:
+        "200":
+          description: ""
+      deprecated: false
+  /auth/refresh:
+    post:
+      tags:
+      - Auth
+      summary: Request refresh token
+      operationId: Requestrefreshtoken
+      parameters: []
+      responses:
+        "200":
+          description: ""
+      deprecated: false
+  /user/:
+    get:
+      tags:
+      - User
+      summary: getAllUsers (Admin)
+      operationId: getAllUsers(Admin)
+      parameters:
+      - name: token
+        in: header
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGI5MDVhNGRlZmRjYTM2NmUxZjQxNTEiLCJpc0FkbWluIjp0cnVlLCJpYXQiOjE2ODk4NjA2NTUsImV4cCI6MTY4OTg2MjQ1NX0.1IAAkBUyhxcKvv75Xq8uzdDxJFIXIQgknB0Sp9L8o1E
+      responses:
+        "200":
+          description: ""
+      deprecated: false
+      security: []
+  /user/{userId}:
+    get:
+      tags:
+      - User
+      summary: get User by id (Admin)
+      operationId: getUserbyid(Admin)
+      parameters:
+      - name: token
+        in: header
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGI3ODdiNWU2OTQzMDNiMDU0NDk2NGYiLCJpc0FkbWluIjp0cnVlLCJpYXQiOjE2ODk3Nzg2OTEsImV4cCI6MTY4OTc4MDQ5MX0._8AetufVMciyB_UHpZssqNDdL6KWMpq6zSmki6QZqpc
+      - name: userId
+        in: path
+        description: ID of user that needs to get
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: ""
+      deprecated: false
+    put:
+      tags:
+      - User
+      summary: Update user by id (Admin)
+      operationId: Updateuserbyid(Admin)
+      parameters:
+      - name: token
+        in: header
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGI3ODdiNWU2OTQzMDNiMDU0NDk2NGYiLCJpc0FkbWluIjp0cnVlLCJpYXQiOjE2ODk4MTkzNjksImV4cCI6MTY4OTgyMTE2OX0.9MHagtwGGBn09XdWFFahXWW2K3lzDY6Zcbt2FmOPBTg
+      - name: userId
+        in: path
+        description: ID of user that needs to be updated
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user_userId_body'
+            example:
+              username: midas
+              email: minhdaimidas@gmail.com
+              isAdmin: false
+        required: true
+      responses:
+        "200":
+          description: ""
+      deprecated: false
+    delete:
+      tags:
+      - User
+      summary: Delete user by id(Admin)
+      operationId: Deleteuserbyid(Admin)
+      parameters:
+      - name: token
+        in: header
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGI3ODdiNWU2OTQzMDNiMDU0NDk2NGYiLCJpc0FkbWluIjp0cnVlLCJpYXQiOjE2ODk3Nzg2OTEsImV4cCI6MTY4OTc4MDQ5MX0._8AetufVMciyB_UHpZssqNDdL6KWMpq6zSmki6QZqpc
+      - name: userId
+        in: path
+        description: ID of user that needs to be deleted
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: ""
+      deprecated: false
+  /user/profile:
+    get:
+      tags:
+      - User
+      summary: get User profile
+      operationId: getUserprofile
+      parameters:
+      - name: token
+        in: header
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGI4ZjdjMmY2ZmU0MjJlNzEzMmNlODMiLCJpc0FkbWluIjp0cnVlLCJpYXQiOjE2ODk4NDQzMDAsImV4cCI6MTY4OTg0NjEwMH0.osbjDm3fLE7sSiBedvlc_v8gEGDuzLcyrL_lcfpcHl4
+      responses:
+        "200":
+          description: ""
+      deprecated: false
+    put:
+      tags:
+      - User
+      summary: Update user profile
+      operationId: Updateuserprofile
+      parameters:
+      - name: token
+        in: header
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGI4ZjdjMmY2ZmU0MjJlNzEzMmNlODMiLCJpc0FkbWluIjp0cnVlLCJpYXQiOjE2ODk4NDQzMDAsImV4cCI6MTY4OTg0NjEwMH0.osbjDm3fLE7sSiBedvlc_v8gEGDuzLcyrL_lcfpcHl4
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user_profile_body'
+            example:
+              username: midas
+              email: minhdaimidas@gmail.com
+        required: true
+      responses:
+        "200":
+          description: ""
+      deprecated: false
+  /order:
+    get:
+      tags:
+      - Order
+      summary: getAllOrder (admin)
+      operationId: getAllOrder(admin)
+      parameters:
+      - name: Token
+        in: header
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGI5MDVhNGRlZmRjYTM2NmUxZjQxNTEiLCJpc0FkbWluIjp0cnVlLCJpYXQiOjE2ODk5MTI4ODAsImV4cCI6MTY4OTk1NjA4MH0.9BM4oiGgLg-ZQbtyPqVD0N7RTlHjBfpAv0YnaoSlOAU
+      responses:
+        "200":
+          description: ""
+      deprecated: false
+    post:
+      tags:
+      - Order
+      summary: addOrderItems
+      operationId: addOrderItems
+      parameters:
+      - name: token
+        in: header
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGI5MDVhNGRlZmRjYTM2NmUxZjQxNTEiLCJpc0FkbWluIjp0cnVlLCJpYXQiOjE2ODk4NTA2MTQsImV4cCI6MTY4OTg1MjQxNH0.aRqQ_L1zxRXW2wG5DWwnprIxmeXCgmm0TGMLSCdgQ6g
+      requestBody:
+        description: ""
+        content:
+          text/plain:
+            schema:
+              type: object
+              example: {}
+            example: {}
+        required: true
+      responses:
+        "200":
+          description: ""
+      deprecated: false
+  /order/64b93d7fc154ae52de672a78:
+    get:
+      tags:
+      - Order
+      summary: getOrderbyID
+      operationId: getOrderbyID
+      parameters:
+      - name: Token
+        in: header
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGI5MDVhNGRlZmRjYTM2NmUxZjQxNTEiLCJpc0FkbWluIjp0cnVlLCJpYXQiOjE2ODk5MTI4ODAsImV4cCI6MTY4OTk1NjA4MH0.9BM4oiGgLg-ZQbtyPqVD0N7RTlHjBfpAv0YnaoSlOAU
+      responses:
+        "200":
+          description: ""
+      deprecated: false
+  /order/myorders:
+    get:
+      tags:
+      - Order
+      summary: getMyOrder
+      operationId: getMyOrder
+      parameters:
+      - name: Token
+        in: header
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGI5MDVhNGRlZmRjYTM2NmUxZjQxNTEiLCJpc0FkbWluIjp0cnVlLCJpYXQiOjE2ODk5MTI4ODAsImV4cCI6MTY4OTk1NjA4MH0.9BM4oiGgLg-ZQbtyPqVD0N7RTlHjBfpAv0YnaoSlOAU
+      responses:
+        "200":
+          description: ""
+      deprecated: false
+  /order/{orderId}/pay:
+    put:
+      tags:
+      - Order
+      summary: updateOrderToDelivered
+      operationId: updateOrderToDelivered
+      parameters:
+      - name: Token
+        in: header
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGI5MDVhNGRlZmRjYTM2NmUxZjQxNTEiLCJpc0FkbWluIjp0cnVlLCJpYXQiOjE2ODk5MTI4ODAsImV4cCI6MTY4OTk1NjA4MH0.9BM4oiGgLg-ZQbtyPqVD0N7RTlHjBfpAv0YnaoSlOAU
+      - name: orderId
+        in: path
+        description: ID of user that needs to get
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/orderId_pay_body'
+            example:
+              id: "43489328"
+              status: Pay successfully
+              udpate_time: 21-07-2023
+              email_address: minhdai@gmail.com
+        required: true
+      responses:
+        "200":
+          description: ""
+      deprecated: false
+  /order/{orderId}/deliver:
+    put:
+      tags:
+      - Order
+      summary: updateOrderToPaid
+      operationId: updateOrderToPaid
+      parameters:
+      - name: Token
+        in: header
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGI5MDVhNGRlZmRjYTM2NmUxZjQxNTEiLCJpc0FkbWluIjp0cnVlLCJpYXQiOjE2ODk5MTI4ODAsImV4cCI6MTY4OTk1NjA4MH0.9BM4oiGgLg-ZQbtyPqVD0N7RTlHjBfpAv0YnaoSlOAU
+      - name: orderId
+        in: path
+        description: ID of user that needs to get
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: ""
+      deprecated: false
+components:
+  schemas:
+    addAuthorRequest:
+      title: addAuthorRequest
+      required:
+      - name
+      - year
+      type: object
+      properties:
+        name:
+          type: string
+        year:
+          type: string
+      example:
+        name: H.P Lovecraft
+        year: "1978"
+    UpdateAuthorRequest:
+      title: UpdateAuthorRequest
+      required:
+      - name
+      - year
+      type: object
+      properties:
+        name:
+          type: string
+        year:
+          type: string
+      example:
+        name: Bruce Brown
+        year: "1967"
+    createaBookAdminRequest:
+      title: createaBookAdminRequest
+      required:
+      - author
+      - countInStock
+      - description
+      - genres
+      - image
+      - name
+      - numReviews
+      - price
+      type: object
+      properties:
+        name:
+          type: string
+        price:
+          type: integer
+          format: int32
+        genres:
+          type: string
+        image:
+          type: string
+        author:
+          type: string
+        countInStock:
+          type: integer
+          format: int32
+        numReviews:
+          type: integer
+          format: int32
+        description:
+          type: string
+      example:
+        name: Dunwich Horror
+        price: 99000
+        genres: Horror
+        image: /images/3.jpg
+        author: 64b909c43818c3548b37f3c9
+        countInStock: 4
+        numReviews: 56
+        description: "Nằm trong một ngôi làng bị cô lập, hoang vắng và suy đồi của Dunwich, Massachusetts. Ẩn mình trong một vùng đất hoang vu bị nguyền rủa, của những tiếng ồn ..."
+    ReviewabookRequest:
+      title: ReviewabookRequest
+      required:
+      - comment
+      - name
+      - rating
+      - user
+      type: object
+      properties:
+        name:
+          type: string
+        rating:
+          type: integer
+          format: int32
+        comment:
+          type: string
+        user:
+          type: string
+      example:
+        name: Minh Đại
+        rating: 5
+        comment: great
+        user: 64b905a4defdca366e1f4151
+    RegisterRequest:
+      title: RegisterRequest
+      required:
+      - email
+      - name
+      - password
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        name: Nguyễn Văn A
+        email: vana@gmail.com
+        password: mutoyugi
+    SignInRequest:
+      title: SignInRequest
+      required:
+      - email
+      - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        email: minhdai@gmail.com
+        password: mutoyugi
+    UpdateuserbyidAdminRequest:
+      title: UpdateuserbyidAdminRequest
+      required:
+      - email
+      - isAdmin
+      - username
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+        isAdmin:
+          type: boolean
+      example:
+        username: midas
+        email: minhdaimidas@gmail.com
+        isAdmin: false
+    UpdateuserprofileRequest:
+      title: UpdateuserprofileRequest
+      required:
+      - email
+      - username
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+      example:
+        username: midas
+        email: minhdaimidas@gmail.com
+    updateOrderToDeliveredRequest:
+      title: updateOrderToDeliveredRequest
+      required:
+      - email_address
+      - id
+      - status
+      - udpate_time
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+        udpate_time:
+          type: string
+        email_address:
+          type: string
+      example:
+        id: "43489328"
+        status: Pay successfully
+        udpate_time: 21-07-2023
+        email_address: minhdai@gmail.com
+    author_body:
+      allOf:
+      - $ref: '#/components/schemas/addAuthorRequest'
+      - example:
+          name: H.P Lovecraft
+          year: "1978"
+    author_authorId_body:
+      allOf:
+      - $ref: '#/components/schemas/UpdateAuthorRequest'
+      - example:
+          name: Bruce Brown
+          year: "1967"
+    book_body:
+      allOf:
+      - $ref: '#/components/schemas/createaBookAdminRequest'
+      - example:
+          name: Dunwich Horror
+          price: 99000
+          genres: Horror
+          image: /images/3.jpg
+          author: 64b909c43818c3548b37f3c9
+          countInStock: 4
+          numReviews: 56
+          description: "Nằm trong một ngôi làng bị cô lập, hoang vắng và suy đồi của Dunwich, Massachusetts. Ẩn mình trong một vùng đất hoang vu bị nguyền rủa, của những tiếng ồn ..."
+    bookId_review_body:
+      allOf:
+      - $ref: '#/components/schemas/ReviewabookRequest'
+      - example:
+          name: Minh Đại
+          rating: 5
+          comment: great
+          user: 64b905a4defdca366e1f4151
+    auth_register_body:
+      allOf:
+      - $ref: '#/components/schemas/RegisterRequest'
+      - example:
+          name: Nguyễn Văn A
+          email: vana@gmail.com
+          password: mutoyugi
+    auth_login_body:
+      allOf:
+      - $ref: '#/components/schemas/SignInRequest'
+      - example:
+          email: minhdai@gmail.com
+          password: mutoyugi
+    user_userId_body:
+      allOf:
+      - $ref: '#/components/schemas/UpdateuserbyidAdminRequest'
+      - example:
+          username: midas
+          email: minhdaimidas@gmail.com
+          isAdmin: false
+    user_profile_body:
+      allOf:
+      - $ref: '#/components/schemas/UpdateuserprofileRequest'
+      - example:
+          username: midas
+          email: minhdaimidas@gmail.com
+    orderId_pay_body:
+      allOf:
+      - $ref: '#/components/schemas/updateOrderToDeliveredRequest'
+      - example:
+          id: "43489328"
+          status: Pay successfully
+          udpate_time: 21-07-2023
+          email_address: minhdai@gmail.com
